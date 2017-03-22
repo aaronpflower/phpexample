@@ -1,0 +1,145 @@
+/* Note: Styles are mobile first */
+
+/* Base element styles to add to normalize.css */
+html {
+    height: 100%;
+    width: 100%;
+    font-family: 'Rubik', sans-serif;
+}
+
+body {
+    height: 100%;
+    width: 100%;
+    background-color: #fff7ec;
+    overflow: hidden;
+}
+
+ul {
+    list-style: none;
+}
+
+input {
+    padding: .5em;
+    background: transparent;
+    text-indent: 0.5em;
+    border: 1px solid #465E69;
+    margin-bottom: .5em;
+    color: #213033;
+    text-shadow: 0 0 0 #f2f2f2;
+    -webkit-transition: all 250ms;
+    transition: all 250ms;
+}
+
+textarea:focus, input:focus{
+    outline: none;
+}
+
+button {
+    outline: none;
+}
+
+/* Fonts */
+.largeText {
+    font-family: 'Rubik', sans-serif;
+    margin: .5em 0;
+    text-decoration: none;
+    font-size: 2em;
+    letter-spacing: .03em;
+}
+
+.mediumText {
+    font-family: 'Rubik', sans-serif;
+    margin: .5em 0;
+    text-decoration: none;
+    font-size: 1.5em;
+    text-decoration: none;
+    letter-spacing: .05em;
+}
+
+.smallText {
+    font-family: 'Rubik', sans-serif;
+    margin: .5em 0;
+    text-decoration: none;
+    font-size: .8em;
+    line-height: 1.5em;
+    letter-spacing: .1em;
+}
+
+/* Landing */
+.mainContainer {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+}
+
+.locationStream {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+    width: 25%;
+    border-right: 1px solid #0d3a59;
+}
+
+
+.locationItem {
+    position: relative;
+    border: 1px solid #f0576b;
+    background-color: #fff7ec;
+    color: #f0576b;
+    padding: 1em;
+    margin-bottom: 1em;
+    cursor: pointer;
+    width: 80%;
+    -webkit-box-shadow: 0px 0px 9px 1px rgba(207,216,223,1);
+    -moz-box-shadow: 0px 0px 9px 1px rgba(207,216,223,1);
+    box-shadow: 0px 0px 9px 1px rgba(207,216,223,1);
+    text-align: center;
+    transition: all .3s ease;
+}
+
+.locationItem:hover {
+    background-color: #f0576b;
+    color: #fff7ec;
+}
+
+.delete-item {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+.locationDetails {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 75%;
+}
+
+.form {
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+.formItem {
+    flex: 1 1 auto;
+}
+
+.btn {
+    background-color: #213033;
+    border: 1px solid #213033;
+    padding: .5em;
+	color: #fff;
+    text-align: center;
+    cursor: pointer;
+    line-height: 1.15;
+	transition: all .1s ease-in-out;
+}
+
+.btn:hover {
+    color: #213033;
+    background-color: #fff;
+}
