@@ -16,16 +16,4 @@ class Location {
     }
 
 }
-
-class locationList {
-    public $list;
-
-    function __construct() {
-        require_once 'db.php';
-        $db = new Db();
-        $result = $db->findAll();
-        $rows = pg_num_rows($result);
-        return $rows;
-    }
-}
 ?>

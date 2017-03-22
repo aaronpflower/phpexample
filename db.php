@@ -11,14 +11,16 @@ class Db {
         $escapedState = pg_escape_string($state);
         $escapedLat = pg_escape_string($lat);
         $escapedLng = pg_escape_string($lng);
-        $query = "INSERT INTO LOCATIONS(city, state, lat, lng) VALUES('" . $escapedCity . "', '" . $escapedState . "', '" . $escapedLat . "', '" . $escapedLng . "')";
+        $query = "INSERT INTO LOCATIONS(city, state, lat, lng) VALUES('" . $escapedCity . "', '" . $escapedState . "', '" . $escapedLat . "', '" . $escapedLng . "') RETURNING id";
         $result = pg_query($this->psql, $query);
 
         if (!$result) {
             echo "An error occurred.\n";
             exit;
         } else {
-            echo "YAY";
+            while ($row = pg_fetch_array($result)) {
+                echo json_encode($row);
+            }
             exit;
         }
     }

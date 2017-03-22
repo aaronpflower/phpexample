@@ -2,7 +2,7 @@
 require 'controller.php';
 $controller = new Controller();
 $result = $controller->showLocations();
-$data = pg_fetch_object($result);
+$data = pg_fetch_all($result);
 ?>
 <!DOCTYPE html>
 <html>
@@ -19,34 +19,36 @@ $data = pg_fetch_object($result);
     </head>
     <body>
         <div class="mainContainer">
-            <div id="locationStream" class="locationStream">
-                <?php if(!empty($data)) : ?>
-                    <p> Locations</p>
-                    <?php
-                    while($data = pg_fetch_object($result)):
-                        $city = $data->city;
-                        $state = $data->state;
-                        $id = $data->id;
-                    ?>
-                        <div class="locationItem">
-                            <i class="fa fa-times delete-item" aria-hidden="true"></i>
-                            <p class="smallText"><?php echo $city . "," . $state ?></p>
-                            <input type="hidden" name="id" id="id" value="<?php echo $id ?>" />
-                        </div>
-                    <?php endwhile ?>
-                <?php else : ?>
-                    <p>No Locations Yet</p>
-                <?php endif; ?>
-            </div>
-            <div class="locationDetails">
-                <h1 class="largeText">Try it out and enter a city!</h1>
+            <nav class="nav">
+                <i class="fa fa-cloud" aria-hidden="true"></i>
+                <h1 class="formItem largeText">Weather App</h1>
                 <form id="form" class="form">
-                    <input class="formItem" type="text" name='address' placeholder="Enter City"/>
-                    <input class="btn formItem" type="submit" value="Get Current Conditions"/>
+                    <input class="formItem" type="text" name='address' placeholder="Enter City, State"/>
+                    <input class="btn formItem" type="submit" value="Get Conditions"/>
                 </form>
+            </nav>
+            <div class="mainContent">
+                <div id="locationStream" class="locationStream">
+                    <?php if(!empty($data)) : ?>
+                        <p> Locations</p>
+                        <?php
+                        foreach($data as $prop):
+                        ?>
+                            <div class="locationItem">
+                                <i class="fa fa-times delete-item" aria-hidden="true"></i>
+                                <p class="smallText"><?php echo $prop['city'] . "," . $prop['state'] ?></p>
+                                <input type="hidden" name="id" id="id" value="<?php echo $prop['id'] ?>" />
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else : ?>
+                        <p>No Locations Yet</p>
+                    <?php endif; ?>
+                </div>
+                <div class="locationDetails">
+
+                </div>
             </div>
-            <div id='conditons'></div>
         </div>
-       <script src="./scripts.js"></script>
+       <script src="./controllerScripts.js"></script>
     </body>
 </html>

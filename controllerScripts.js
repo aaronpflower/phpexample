@@ -1,6 +1,6 @@
 var loc = {}
 
-// // First get lat&long for location then go to forecast.io for conditions
+// // First get lat&lng for location then go to forecast.io for conditions
 $("#form").on("submit", function(e) {
     e.preventDefault();
     var data = $(this).serialize();
@@ -19,11 +19,28 @@ $("#form").on("submit", function(e) {
 
 function addLocation(loc) {
     $.ajax({
-        type: 'POST',
+        method: 'POST',
         url: 'controller.php?func=addLocation',
         data: 'city='+loc.city+'&state='+loc.state+'&lat='+loc.lat+'&lng='+loc.lng,
         success: function(res) {
-            location.reload();
+            res = JSON.parse(res)
+            $(".locationStream").append(
+                "<div class='locationItem'><i class='fa fa-times delete-item' aria-hidden='true'></i><p class='smallText'>" + loc.city + "," + loc.state + "</p><input type='hidden' name='id'' value="+res.id+"></div>"
+            )
+            return getConditions(loc.lat, loc.lng);
+        },
+        error: function(err) {
+
+        }
+    })
+}
+
+function showLocations() {
+     $.ajax({
+        method: 'GET',
+        url: 'controller.php?func=showLocation',
+        data: 'city='+loc.city+'&state='+loc.state+'&lat='+loc.lat+'&lng='+loc.lng,
+        success: function(res) {
             return getConditions(loc.lat, loc.lng);
         },
         error: function(err) {
@@ -39,7 +56,8 @@ function getConditions(lat, lng) {
         url: "https://api.darksky.net/forecast/963c2a286c46883b606d0962897eeef7/" + lat + ',' + lng,
         dataType: "jsonp",
         success: function(res) {
-            return $('#form').append("<p>Hi</p>")
+            $('.locationDetails').empty();
+            return $('.locationDetails').append("<p>'Current Temp: " + res.currently.apparentTemperature + "'</p>")
         },
         error: function(err) {
             return console.log(err)
@@ -47,6 +65,7 @@ function getConditions(lat, lng) {
     })
 }
 
+// Click event to handle removing location or getConditions
 $('.locationStream').on('click', '.locationItem', function(e) {
     var val = $(this).find("input").val();
 
