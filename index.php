@@ -31,7 +31,7 @@ $data = pg_fetch_object($result);
                         <div class="locationItem">
                             <i class="fa fa-times delete-item" aria-hidden="true"></i>
                             <p class="smallText"><?php echo $city . "," . $state ?></p>
-                            <input type="hidden" name="id" id="id" value="$id" />
+                            <input type="hidden" name="id" id="id" value="<?php echo $id ?>" />
                         </div>
                     <?php endwhile ?>
                 <?php else : ?>
@@ -45,6 +45,7 @@ $data = pg_fetch_object($result);
                     <input class="btn formItem" type="submit" value="Get Current Conditions"/>
                 </form>
             </div>
+            <div id='conditons'></div>
         </div>
        <script src="./scripts.js"></script>
     </body>

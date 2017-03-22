@@ -17,6 +17,18 @@ class Controller {
         require_once 'model.php';
         $instance = new Location($_POST['city'], $_POST['state'], $_POST['lat'], $_POST['lng']);
     }
+
+    public function getLocationWeather() {
+        require_once 'db.php';
+        $instance = new Db();
+        $result = $instance->findById($_POST['id']);
+    } 
+
+    public function deleteLocation() {
+        require_once 'db.php';
+        $instance = new Db();
+        $result = $instance->delete($_POST['deleteId']);
+    }  
 }
 
 $func = @$_GET["func"];
@@ -29,6 +41,11 @@ switch($func) {
     case "showLocations":
         $ctrl->showLocations();
         break;
+    case "getLocationWeather":
+        $ctrl->getLocationWeather();
+        break;
+    case "deleteLocation":
+        $ctrl->deleteLocation();
     default:
         break;
 }

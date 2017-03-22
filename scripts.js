@@ -12,7 +12,7 @@ $("#form").on("submit", function(e) {
             return addLocation(loc)
         },
         error: function(err) {
-            return console.log
+            return console.log(err)
         }
     })
 });
@@ -23,8 +23,8 @@ function addLocation(loc) {
         url: 'controller.php?func=addLocation',
         data: 'city='+loc.city+'&state='+loc.state+'&lat='+loc.lat+'&lng='+loc.lng,
         success: function(res) {
-            console.log(res)
-            return render();
+            location.reload();
+            return getConditions(loc.lat, loc.lng);
         },
         error: function(err) {
 
@@ -32,64 +32,54 @@ function addLocation(loc) {
     })
 }
 
-function showLocations() {
+// Call to forecast.io
+function getConditions(lat, lng) {
     $.ajax({
-        type: 'GET',
-        url: 'controller.php?func=showLocations',
+        method: 'GET',
+        url: "https://api.darksky.net/forecast/963c2a286c46883b606d0962897eeef7/" + lat + ',' + lng,
+        dataType: "jsonp",
         success: function(res) {
-            console.log(res)
-            return $("#locationStream").html(res);
+            return $('#form').append("<p>Hi</p>")
+        },
+        error: function(err) {
+            return console.log(err)
+        }
+    })
+}
+
+$('.locationStream').on('click', '.locationItem', function(e) {
+    var val = $(this).find("input").val();
+
+    if ($(e.target).hasClass("fa-times")) {
+        deleteLocation(val)
+    } else {
+        $.ajax({
+            type: 'POST',
+            url: 'controller.php?func=getLocationWeather',
+            data: 'id='+val,
+            success: function(res) {
+                console.log(res)
+                res = JSON.parse(res)
+                return getConditions(res.lat, res.lng);
+            },
+            error: function(err) {
+                return console.log(err);
+            } 
+        })
+    }
+});
+
+
+function deleteLocation(id) {
+    $.ajax({
+        type: 'POST',
+        url: 'controller.php?func=deleteLocation',
+        data: 'deleteId='+id,
+        success: function(res) {
+            return location.reload();
         },
         error: function(err) {
 
         }
     })
 }
-
-
-// // // Call to forecast.io
-// function getConditions(lat, lng) {
-//     $.ajax({
-//         method: 'GET',
-//         url: "https://api.darksky.net/forecast/963c2a286c46883b606d0962897eeef7/" + lat + ',' + lng,
-//         dataType: "jsonp",
-//         success: function(res) {
-//             return displayConditions(res.currently)
-//         },
-//         error: function(err) {
-//             return console.log(err)
-//         }
-//     })
-// }
-
-// function displayConditions(data) {
-//      $.ajax({
-//         type: 'POST',
-//         url: 'displayConditions.php',
-//         data: {data: JSON.stringify(data)},
-//         success: function(res) {
-//             var php = "<?php echo hi ?>;"
-//             $("#conditons").append(php)
-//         },
-//         error: function(err) {
-//             console.log(err)
-//         }
-//     })
-// }
-
-
-// $('.locationStream').on('click', '.locationItem', function(e) { 
-//     var val = $(this).find("input").val();
-//     $.ajax({
-//         type: 'POST',
-//         url: 'getLocationWeather.php',
-//         data: 'id='+val,
-//         success: function(res) {
-//             res = JSON.parse(res)
-//             return getConditions(res.lat, res.lng);
-//         },
-//         error: function(err) {
-//             return console.log(err);
-//         } 
-//     })
-// });

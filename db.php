@@ -54,7 +54,7 @@ class Db {
     }
 
     function delete($id) {
-        $result = pg_delete($this->psql, 'LOCATIONS', $id);
+        $result = pg_delete($this->psql, 'locations', array('id'=>$id));
 
         if (!$result) {
             return "An error occurred.\n";
