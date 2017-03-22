@@ -23,7 +23,8 @@ function addLocation(loc) {
         url: 'controller.php?func=addLocation',
         data: 'city='+loc.city+'&state='+loc.state+'&lat='+loc.lat+'&lng='+loc.lng,
         success: function(res) {
-            return showLocations();
+            console.log(res)
+            return render();
         },
         error: function(err) {
 
@@ -35,7 +36,6 @@ function showLocations() {
     $.ajax({
         type: 'GET',
         url: 'controller.php?func=showLocations',
-        // data: 'city='+loc.city+'&state='+loc.state+'&lat='+loc.lat+'&lng='+loc.lng,
         success: function(res) {
             console.log(res)
             return $("#locationStream").html(res);

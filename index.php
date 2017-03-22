@@ -1,3 +1,9 @@
+<?php
+require 'controller.php';
+$controller = new Controller();
+$result = $controller->showLocations();
+$data = pg_fetch_object($result);
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -14,7 +20,23 @@
     <body>
         <div class="mainContainer">
             <div id="locationStream" class="locationStream">
-                
+                <?php if(!empty($data)) : ?>
+                    <p> Locations</p>
+                    <?php
+                    while($data = pg_fetch_object($result)):
+                        $city = $data->city;
+                        $state = $data->state;
+                        $id = $data->id;
+                    ?>
+                        <div class="locationItem">
+                            <i class="fa fa-times delete-item" aria-hidden="true"></i>
+                            <p class="smallText"><?php echo $city . "," . $state ?></p>
+                            <input type="hidden" name="id" id="id" value="$id" />
+                        </div>
+                    <?php endwhile ?>
+                <?php else : ?>
+                    <p>No Locations Yet</p>
+                <?php endif; ?>
             </div>
             <div class="locationDetails">
                 <h1 class="largeText">Try it out and enter a city!</h1>
