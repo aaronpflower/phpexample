@@ -138,6 +138,12 @@ button {
     width: 75%;
 }
 
+.conditons {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #465E69;
+    padding: 1em;
+}
 .btn {
     background-color: transparent;
     border: 1px solid #213033;

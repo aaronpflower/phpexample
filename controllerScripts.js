@@ -56,8 +56,9 @@ function getConditions(lat, lng) {
         url: "https://api.darksky.net/forecast/963c2a286c46883b606d0962897eeef7/" + lat + ',' + lng,
         dataType: "jsonp",
         success: function(res) {
+            console.log(res)
             $('.locationDetails').empty();
-            return $('.locationDetails').append("<p>'Current Temp: " + res.currently.apparentTemperature + "'</p>")
+            return $('.locationDetails').append("<div class='conditons'><p class='mediumText'>Current Temp: " + res.currently.apparentTemperature + "</p><p class='mediumText'>Dew Point: " + res.currently.dewPoint + "</p><p class='mediumText'>Pressure: " + res.currently.pressure + "</p><p class='mediumText'>Wind Speed: " + res.currently.windSpeed + "</p></div>")
         },
         error: function(err) {
             return console.log(err)
