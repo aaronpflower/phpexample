@@ -45,7 +45,7 @@ $data = pg_fetch_all($result);
                     <?php endif; ?>
                 </div>
                 <div class="locationDetails">
-
+                    <h1 class="mediumText error"></h1>
                 </div>
             </div>
         </div>

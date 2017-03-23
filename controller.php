@@ -15,19 +15,19 @@ class Controller {
 
     public function addLocation() {
         require_once 'model.php';
-        $instance = new Location($_POST['city'], $_POST['state'], $_POST['lat'], $_POST['lng']);
+        return $instance = new Location($_POST['city'], $_POST['state'], $_POST['lat'], $_POST['lng']);
     }
 
-    public function getLocationWeather() {
+    public function findById() {
         require_once 'db.php';
         $instance = new Db();
-        $result = $instance->findById($_POST['id']);
+        return $result = $instance->findById($_POST['id']);
     } 
 
     public function deleteLocation() {
         require_once 'db.php';
         $instance = new Db();
-        $result = $instance->delete($_POST['deleteId']);
+        return $result = $instance->delete($_POST['deleteId']);
     }  
 }
 
@@ -38,11 +38,8 @@ switch($func) {
     case "addLocation":
         $ctrl->addLocation();
         break;
-    case "showLocations":
-        $ctrl->showLocations();
-        break;
-    case "getLocationWeather":
-        $ctrl->getLocationWeather();
+    case "findById":
+        $ctrl->findById();
         break;
     case "deleteLocation":
         $ctrl->deleteLocation();

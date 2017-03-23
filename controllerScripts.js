@@ -1,6 +1,4 @@
-var loc = {}
-
-// // First get lat&lng for location then go to forecast.io for conditions
+// Submit Form to get lat & lng for location
 $("#form").on("submit", function(e) {
     e.preventDefault();
     var data = $(this).serialize();
@@ -8,15 +6,19 @@ $("#form").on("submit", function(e) {
         method: 'GET',
         url: "https://maps.googleapis.com/maps/api/geocode/json?" + data + "&key=AIzaSyBzaYojdccFaRHkouxZK8cYOijBMcYsi1E",
         success: function(res) {
-            loc = {city: res.results[0].address_components[0].long_name, state: res.results[0].address_components[2].short_name, lat: res.results[0].geometry.location.lat, lng: res.results[0].geometry.location.lng}
-            return addLocation(loc)
+            if(res.status !== "OK") {
+                return $(".error").html('Errors happen, please try again.')
+            }
+            var location = {city: res.results[0].address_components[0].long_name, state: res.results[0].address_components[2].short_name, lat: res.results[0].geometry.location.lat, lng: res.results[0].geometry.location.lng}
+            return addLocation(location)
         },
         error: function(err) {
-            return console.log(err)
+            return $(".error").html('Errors happen, please try again.' + err)
         }
     })
 });
 
+// Add location to DB with lat & lng
 function addLocation(loc) {
     $.ajax({
         method: 'POST',
@@ -30,21 +32,7 @@ function addLocation(loc) {
             return getConditions(loc.lat, loc.lng);
         },
         error: function(err) {
-
-        }
-    })
-}
-
-function showLocations() {
-     $.ajax({
-        method: 'GET',
-        url: 'controller.php?func=showLocation',
-        data: 'city='+loc.city+'&state='+loc.state+'&lat='+loc.lat+'&lng='+loc.lng,
-        success: function(res) {
-            return getConditions(loc.lat, loc.lng);
-        },
-        error: function(err) {
-
+            return $(".error").html('Errors happen, please try again.' + err)
         }
     })
 }
@@ -56,12 +44,11 @@ function getConditions(lat, lng) {
         url: "https://api.darksky.net/forecast/963c2a286c46883b606d0962897eeef7/" + lat + ',' + lng,
         dataType: "jsonp",
         success: function(res) {
-            console.log(res)
             $('.locationDetails').empty();
             return $('.locationDetails').append("<div class='conditons'><p class='mediumText'>Current Temp: " + res.currently.apparentTemperature + "</p><p class='mediumText'>Dew Point: " + res.currently.dewPoint + "</p><p class='mediumText'>Pressure: " + res.currently.pressure + "</p><p class='mediumText'>Wind Speed: " + res.currently.windSpeed + "</p></div>")
         },
         error: function(err) {
-            return console.log(err)
+            return $(".error").html('Errors happen, please try again.' + err)
         }
     })
 }
@@ -75,21 +62,20 @@ $('.locationStream').on('click', '.locationItem', function(e) {
     } else {
         $.ajax({
             type: 'POST',
-            url: 'controller.php?func=getLocationWeather',
+            url: 'controller.php?func=findById',
             data: 'id='+val,
             success: function(res) {
-                console.log(res)
                 res = JSON.parse(res)
                 return getConditions(res.lat, res.lng);
             },
             error: function(err) {
-                return console.log(err);
+                return $(".error").html('Errors happen, please try again.' + err)
             } 
         })
     }
 });
 
-
+// delete location from stream
 function deleteLocation(id) {
     $.ajax({
         type: 'POST',
@@ -99,7 +85,7 @@ function deleteLocation(id) {
             return location.reload();
         },
         error: function(err) {
-
+            return $(".error").html('Errors happen, please try again.' + err)
         }
     })
 }
