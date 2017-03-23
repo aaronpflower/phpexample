@@ -172,6 +172,7 @@ button {
 }
 
 .locationDetails {
+    position: relative;
     flex: 0 0 75%;
     max-width: 75%;
     background-color: #fff;
@@ -204,3 +205,4 @@ button {
 .error {
     color: #f0576b;
 }
+

@@ -45,6 +45,7 @@ $data = pg_fetch_all($result);
                     <?php endif; ?>
                 </div>
                 <div class="locationDetails">
+                    <i id="loader" class="loader fa fa-refresh fa-spin fa-3x fa-fw" aria-hidden="true"></i>
                     <h1 class="mediumText error"></h1>
                 </div>
             </div>
