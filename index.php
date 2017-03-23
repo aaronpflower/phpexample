@@ -22,15 +22,15 @@ $data = pg_fetch_all($result);
             <nav class="nav">
                 <i class="fa fa-cloud" aria-hidden="true"></i>
                 <h1 class="formItem largeText">Weather App</h1>
-                <form id="form" class="form">
-                    <input class="formItem" type="text" name='address' placeholder="Enter City, State"/>
-                    <input class="btn formItem" type="submit" value="Get Conditions"/>
+                <form id="form">
+                    <input type="text" name='address' placeholder="Enter City, State"/>
+                    <input class="btn" type="submit" value="Get Conditions"/>
                 </form>
             </nav>
             <div class="mainContent">
                 <div id="locationStream" class="locationStream">
                     <?php if(!empty($data)) : ?>
-                        <p> Locations</p>
+                        <p class="smallText">Click to see current weather</p>
                         <?php
                         foreach($data as $prop):
                         ?>
