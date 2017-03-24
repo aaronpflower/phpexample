@@ -11,9 +11,17 @@ class Location {
         $this->lat = $lat;
         $this->lng - $lng;
         require_once 'db.php';
-        $instance = new Db();
+        $instance = new LocationsDb();
         $response = $instance->create($city, $state, $lat, $lng);
     }
 
+}
+
+class Conditions {
+    public $conditions;
+
+    function __construct($conditions) {
+        $this->conditons = $conditions;
+    }
 }
 ?>

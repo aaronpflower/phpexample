@@ -1,69 +1,51 @@
 <?php
 class Db {
-    public $psql;
+    private $psql;
 
     function __construct() {
         $this->psql = pg_connect("host=localhost port=5432 dbname=phpweatherapp");
     }
 
-    function create($city, $state, $lat, $lng) {
+    public function getDbConnection() {
+        return $this->psql;
+    }
+}
+
+class LocationsDb extends Db {
+
+    function __construct() {
+        parent::__construct();
+    }
+
+    public function create($city, $state, $lat, $lng) {
         $escapedCity = pg_escape_string($city);
         $escapedState = pg_escape_string($state);
         $escapedLat = pg_escape_string($lat);
         $escapedLng = pg_escape_string($lng);
         $query = "INSERT INTO LOCATIONS(city, state, lat, lng) VALUES('" . $escapedCity . "', '" . $escapedState . "', '" . $escapedLat . "', '" . $escapedLng . "') RETURNING id";
-        $result = pg_query($this->psql, $query);
+        $result = pg_query($this->getDbConnection(), $query);
 
-        if (!$result) {
-            echo "An error occurred.\n";
-            exit;
-        } else {
-            while ($row = pg_fetch_array($result)) {
-                echo json_encode($row);
-            }
-            exit;
-        }
+        return $result;
     }
 
-    function findById($id) {
+    public function findById($id) {
         $query = "SELECT * FROM LOCATIONS WHERE ID = '" . $id . "'";
-        $result = pg_query($this->psql, $query);
+        $result = pg_query($this->getDbConnection(), $query);
 
-        if (!$result) {
-            echo "An error occurred.\n";
-            exit;
-        } else {
-            while($data = pg_fetch_object($result)) {
-                $lat = $data->lat; 
-                $lng = $data->lng; 
-                $id = $data->id; 
-            } 
-            echo json_encode(array('lat'=>$lat, 'lng'=>$lng));
-        }
+        return $result;
     }
 
-    function findAll() {
+    public function findAll() {
         $query = "SELECT * FROM LOCATIONS";
-        $result = pg_query($this->psql, $query);
+        $result = pg_query($this->getDbConnection(), $query);
 
-        if (!$result) {
-            return "An error occurred.\n";
-            exit;
-        } else {
-            return $result;
-            exit;
-        }
+        return $result;
     }
 
-    function delete($id) {
-        $result = pg_delete($this->psql, 'locations', array('id'=>$id));
-
-        if (!$result) {
-            return "An error occurred.\n";
-            exit;
-        } else {
-            return $result;
-            exit;
+    public function delete($id) {
+        if(!empty($id)) {
+            $result = pg_delete($this->getDbConnection(), 'locations', array('id'=>$id));
+            return $results;
         }
     }
 }
